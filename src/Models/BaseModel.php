@@ -128,10 +128,7 @@ class BaseModel
 			return Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
 		}
 
-		return Carbon::createFromFormat(
-			str_replace('.v', '.u', $this->getDateFormat()),
-			$value
-		);
+		return Carbon::createFromFormat('Y-m-d\TH:i:s.uP', $value);
 	}
 
 	/**
