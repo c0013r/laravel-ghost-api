@@ -115,13 +115,17 @@ class Ghost
 	{
 		$data = [];
 
-		$this->auth();
+		// $this->auth();
 
 		try
 		{
 			// default headers
-			$options['headers']['Authorization'] = 'Bearer ' . $this->token;
+//			$options['headers']['Authorization'] = 'Bearer ' . $this->token;
 			$options['headers']['Content-Type'] = 'application/json';
+
+			// auth data for public API
+			$options['query']['client_id'] = $this->clientId;
+			$options['query']['client_secret'] = $this->clientSecret;
 
 			// do a request
 			$response = $this->httpClient->request('GET', $endpoint, $options);

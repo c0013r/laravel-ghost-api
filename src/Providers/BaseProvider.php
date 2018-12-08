@@ -93,6 +93,7 @@ abstract class BaseProvider
 	{
 		$options = [
 			'query' => [
+				'absolute_urls' => true,
 				'limit' => $this->limit,
 				'include' => array_unique($this->includes)
 			]
