@@ -70,13 +70,5 @@ class Ghost extends TestCase
 
 		$this->assertInstanceOf(Carbon::class, $tag->createdAt);
 		$this->assertInstanceOf(Carbon::class, $tag->updatedAt);
-
-		/** @var User $user */
-		$user = \c0013r\GhostAPI\Facades\Ghost::users()
-			->limit(1)->get()->first();
-
-		$this->assertInstanceOf(Carbon::class, $user->createdAt);
-		$this->assertInstanceOf(Carbon::class, $user->updatedAt);
-		$this->assertInstanceOf(Carbon::class, $user->lastSeen);
 	}
 }
