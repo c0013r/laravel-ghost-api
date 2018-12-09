@@ -1,18 +1,21 @@
 {
     "name": "c0013r/laravel-ghost-api",
-    "description": ":description",
+    "description": "ghost.org api for Laravel",
     "license": "MIT",
     "authors": [
         {
             "name": "Andrey Novikov",
             "email": "andrew@7glyphs.com",
-            "homepage": "https://7glyphs.com"
+            "homepage": "https://7glyphs.com",
+	        "role": "Developer"
         }
     ],
     "homepage": "https://github.com/c0013r/laravel-ghost-api",
-    "keywords": ["Laravel", "laravel-ghost-api"],
+    "keywords": ["laravel", "ghost.org", "laravel-ghost-api", "7glyphs"],
     "require": {
-        "illuminate/support": "~5"
+	    "php" : ">=7.1",
+        "illuminate/support": "~5",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",
@@ -22,21 +25,21 @@
     },
     "autoload": {
         "psr-4": {
-            "c0013r\\laravel-ghost-api\\": "src/"
+            "c0013r\\GhostAPI\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "c0013r\\laravel-ghost-api\\Tests\\": "tests"
+            "c0013r\\GhostAPI\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "c0013r\\laravel-ghost-api\\laravel-ghost-apiServiceProvider"
+                "c0013r\\GhostAPI\\ServiceProvider"
             ],
             "aliases": {
-                "laravel-ghost-api": "c0013r\\laravel-ghost-api\\Facades\\laravel-ghost-api"
+                "laravel-ghost-api": "c0013r\\GhostAPI\\Facades\\Ghost"
             }
         }
     }
