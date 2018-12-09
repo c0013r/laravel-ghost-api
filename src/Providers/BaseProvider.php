@@ -16,8 +16,8 @@ abstract class BaseProvider
 	protected $limit = 'all';
 	protected $page = 1;
 
-	protected $filter = [];
-	protected $filterDelimeter = '+';
+	protected $filter;
+	protected $simpleFilterDelimeter = '+';
 
 	protected $includes = [];
 
@@ -55,16 +55,30 @@ abstract class BaseProvider
 		return $this;
 	}
 
+	public function addFilter($filterData)
+	{
+		if (\is_array($filterData) || \is_string($filterData))
+		{
+			$this->filter = $filterData;
+		}
+		else
+		{
+			throw new \InvalidArgumentException('Filter data is invalid. Use array for simple filter or string for custom filter.');
+		}
+
+		return $this;
+	}
+
 	public function filterAndMode()
 	{
-		$this->filterDelimeter = '+';
+		$this->simpleFilterDelimeter = '+';
 
 		return $this;
 	}
 
 	public function filterOrMode()
 	{
-		$this->filterDelimeter = ',';
+		$this->simpleFilterDelimeter = ',';
 
 		return $this;
 	}
@@ -99,6 +113,33 @@ abstract class BaseProvider
 			]
 		];
 
+		// set filtering for results
+		if ($this->filter !== null)
+		{
+			$readyFilter = null;
+
+			if (\is_array($this->filter))
+			{
+				$readyFilter = [];
+
+				foreach ($this->filter as $filterParameter => $filterValue)
+				{
+					$readyFilter[] = $filterParameter . ':' . $this->prepareFilterValue($filterValue);
+				}
+
+				$readyFilter = implode($this->simpleFilterDelimeter, $readyFilter);
+			}
+			else if (\is_string($this->filter))
+			{
+				$readyFilter = $this->filter;
+			}
+
+			if ($readyFilter !== null)
+			{
+				$options['query']['filter'] = $readyFilter;
+			}
+		}
+
 		// filtering the fields we want to get
 		if (\count($this->fields) > 0)
 		{
@@ -106,6 +147,35 @@ abstract class BaseProvider
 		}
 
 		return $options;
+	}
+
+	private function prepareFilterValue($value)
+	{
+		$resultValues = [];
+
+		if (\is_array($value))
+		{
+			foreach ($value as $singleValue)
+			{
+				$resultValues[] = $this->prepareFilterValue($singleValue);
+			}
+		}
+		else if (\is_bool($value))
+		{
+			$resultValues[] = $value ? 'true' : 'false';
+		}
+		else if ($value === null)
+		{
+			$resultValues[] = 'null';
+		}
+		else
+		{
+			$resultValues[] = "'$value'";
+		}
+
+		return \count($resultValues) === 1
+					? $resultValues[0]
+					: sprintf('[%s]', implode(',', $resultValues));
 	}
 
 	protected function addInclude(string $include)

@@ -7,14 +7,14 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-	public function setUp()
+	public function setUp(): void
 	{
 		$this->loadEnvironmentVariables();
 
 		parent::setUp();
 	}
 
-	protected function loadEnvironmentVariables()
+	protected function loadEnvironmentVariables(): void
 	{
 		if (!file_exists(__DIR__ . '/../.env'))
 		{
@@ -31,10 +31,20 @@ abstract class TestCase extends Orchestra
 	 *
 	 * @return array
 	 */
-	protected function getPackageProviders($app)
+	protected function getPackageProviders($app): array
 	{
 		return [
 			\c0013r\GhostAPI\ServiceProvider::class,
 		];
+	}
+
+	protected function callMethod($obj, $name, array $args = [])
+	{
+		$class = new \ReflectionClass($obj);
+
+		$method = $class->getMethod($name);
+		$method->setAccessible(true);
+
+		return $method->invokeArgs($obj, $args);
 	}
 }
