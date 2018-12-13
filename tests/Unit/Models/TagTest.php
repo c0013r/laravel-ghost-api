@@ -8,8 +8,7 @@ use Carbon\Carbon;
 
 class TagTest extends TestCase
 {
-	/** @test */
-	public function tagCreationTest(): void
+	public function testTagCreation(): void
 	{
 		$tag = new Tag([
 			'id' => 'test-id',

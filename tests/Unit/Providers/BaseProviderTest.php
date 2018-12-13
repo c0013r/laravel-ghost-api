@@ -15,8 +15,7 @@ class BaseProviderTest extends TestCase
 		parent::setUp();
 	}
 
-	/** @test */
-	public function filterBuildingTest(): void
+	public function testFilterBuilding(): void
 	{
 		// simple filter
 		$this->providerStub->addFilter(['featured' => true]);

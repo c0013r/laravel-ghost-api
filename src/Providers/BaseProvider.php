@@ -2,6 +2,7 @@
 
 namespace c0013r\GhostAPI\Providers;
 
+use c0013r\GhostAPI\Exceptions\DataException;
 use Illuminate\Support\Collection;
 
 abstract class BaseProvider
@@ -90,12 +91,17 @@ abstract class BaseProvider
 		$queryData = $this->modifyQuery($this->buildBaseQuery());
 		$data = $this->client->request($url, $queryData);
 
-		foreach ($data[$this->entityCode] as $postData)
+		if (array_key_exists($this->entityCode, $data) && \is_array($data[$this->entityCode]))
 		{
-			$results->push(new $this->entityModelClass($postData));
+			foreach ($data[$this->entityCode] as $postData)
+			{
+				$results->push(new $this->entityModelClass($postData));
+			}
+
+			return $results;
 		}
 
-		return $results;
+		throw DataException::noResultsFound($this->entityCode);
 	}
 
 	protected function modifyQuery(array $queryData): array

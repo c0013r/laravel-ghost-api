@@ -8,8 +8,7 @@ use Carbon\Carbon;
 
 class PostTest extends TestCase
 {
-	/** @test */
-	public function postCreationTest(): void
+	public function testPostCreation(): void
 	{
 		$post = new Post([
 			'id' => 'test-id',
