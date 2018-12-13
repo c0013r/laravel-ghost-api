@@ -2,12 +2,12 @@
 
 namespace c0013r\GhostAPI\Tests\Unit;
 
+use c0013r\GhostAPI\Exceptions\DataException;
 use c0013r\GhostAPI\Tests\TestCase;
 
 class Ghost extends TestCase
 {
-	/** @test */
-	public function postsFetchTest(): void
+	public function testPostsFetch(): void
 	{
 		// simple fetch
 		$posts = \c0013r\GhostAPI\Facades\Ghost::posts()
@@ -29,8 +29,7 @@ class Ghost extends TestCase
 		$this->assertNotEmpty($posts[0]->tags);
 	}
 
-	/** @test */
-	public function tagsFetchTest(): void
+	public function testTagsFetch(): void
 	{
 		// simple fetch
 		$tags = \c0013r\GhostAPI\Facades\Ghost::tags()
@@ -39,13 +38,20 @@ class Ghost extends TestCase
 		$this->assertNotEmpty($tags);
 	}
 
-	/** @test */
-	public function usersFetchTest(): void
+	public function testUsersFetch(): void
 	{
 		// simple fetch
 		$users = \c0013r\GhostAPI\Facades\Ghost::users()
 			->limit()->get();
 
 		$this->assertNotEmpty($users);
+	}
+
+	public function testExceptions(): void
+	{
+		$this->expectException(DataException::class);
+
+		\c0013r\GhostAPI\Facades\Ghost::posts()
+			->getById('abracadabra');
 	}
 }

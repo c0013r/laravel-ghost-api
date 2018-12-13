@@ -7,8 +7,7 @@ use c0013r\GhostAPI\Tests\TestCase;
 
 class UserTest extends TestCase
 {
-	/** @test */
-	public function userCreationTest(): void
+	public function testUserCreation(): void
 	{
 		$user = new User([
 			'id' => 'test-id'
