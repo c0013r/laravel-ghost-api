@@ -115,6 +115,7 @@ abstract class BaseProvider
 			'query' => [
 				'absolute_urls' => true,
 				'limit' => $this->limit,
+				'page' => $this->page,
 				'include' => array_unique($this->includes)
 			]
 		];
